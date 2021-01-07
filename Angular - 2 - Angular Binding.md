@@ -24,6 +24,7 @@ Angular 中會用到4種 binding 技巧：
 中間出現了 `{{ }}` 還有 `<app-stock-item></app-stock-item>` 這個沒有看過的東西!
 
 我們先打開 `app.component.ts` 這支檔案的內容，會看到裡面有自動產生的一些東西：
+
 <img src="/img/app_component_ts.png" width="350px">
 
 其中 `{{ }}` 語法是用來取 component 中的屬性，也就是 `app.component.ts` 中的 `title` 的值。而要讓 template 取到 component 中的值，就必須在 component 中給定初始值。
@@ -104,6 +105,7 @@ export class StockItemComponent implements OnInit {
   }
 ```
 完成後在終端機執行 `ng serve` 指令f啟動 Angualr 服務，完成畫面如下：
+
 <img src="/img/interpolation.png" width="350px">
 <br/>
 
@@ -171,6 +173,7 @@ export class StockItemComponent implements OnInit {
 <br/>
 
 完成畫面如下：
+
 <img src="/img/propertyBinding.png">
 
 而使用 Angular 綁定與沒有使用的差別為：
@@ -236,6 +239,7 @@ export class StockItemComponent implements OnInit {
 <br/>
 
 完成畫面如下：
+
 <img src="/img/eventBinding.png">
 <br/>
 
