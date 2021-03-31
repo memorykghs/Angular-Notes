@@ -1,1 +1,1 @@
-# Angular-Notes
+Component 切分練習
