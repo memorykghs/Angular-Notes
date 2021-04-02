@@ -8,4 +8,11 @@ import { Component } from '@angular/core';
 export class AppComponent {
   serverElements = [];
 
+  onServerCreated(serverElements: [{serverName: string, serverContent: string}]){
+
+  }
+
+  onblueprintCreated(serverElements: [{serverName: string, serverContent: string}]){
+
+  }
 }
