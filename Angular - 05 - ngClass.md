@@ -1,4 +1,4 @@
-# Angular - 5 - `ngIf`、`ngIf` with else
+# Angular - 5 - `ngIf`、`ngIf` with else、`ngFor`
 # Angular - 5 - ngClass
 ## ngClass
 * 屬於**屬性型指令**：用來改變元素、元件或其他指令的外觀或行為
