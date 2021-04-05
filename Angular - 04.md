@@ -1,4 +1,4 @@
-# Angular - 4 - Directive
+# Angular - 4 - Directive、模板語法
 
 
 ## 指令 Directive
