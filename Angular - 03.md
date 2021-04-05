@@ -1,4 +1,13 @@
 # Angular - 2 - Directive
+
+
+
+## 雙向繫結 Two-way Data Binding
+雙向繫結比較像是前一張提到的3種方法的結合，也可以說是 Angular 提供的一種語法糖。
+
+後面會詳細提到雙向繫結的方法，這裡先有個概念就好。
+
+
 ## 指令 Directive
 * 多功能的標籤或屬性
 * 使用內建或自訂 Directive，定義 html 元素、操作 DOM 物件

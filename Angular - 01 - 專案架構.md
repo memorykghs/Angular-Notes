@@ -112,6 +112,7 @@ export class AppModule {
 重點在於 `bootstrap: [AppComponent]` 這段程式碼，它會將 AppComopnent 視為必須優先讀取的 Component，這樣 `index.html` 就可以解析 `<app-root></app-root>` 這段 tag 並將 AppComponent 渲染到畫面上。
 
 如果有其他想在 `index.html` 使用的 Component，也必須加在這個 Array 中，接著就會連動到前面提到的根元件 ( 最一開始的 Component，所有的 Component 都會長在它之下 )。
+<br/>
 
 > 小結
 * Angular 專案中幾個重要的角色：
