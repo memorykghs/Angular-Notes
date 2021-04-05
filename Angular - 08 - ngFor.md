@@ -1,3 +1,4 @@
+# Angular - 08 - `@Input`、`@Output`
 ## ngFor
 ```html
 <div class="stock-container" *ngFor="let stock of stocks; index as i">
