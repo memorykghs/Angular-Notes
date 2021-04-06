@@ -1,5 +1,6 @@
 # Angular - 18 - ReactiveForm
 ## Reactive Form 響應式表單
+將驗證表單的部分放在 TypeScript。
 * 在元件(component)定義表單模型，以模型處理表單輸入。
 * 管理表單在特定實踐點上的狀態。
 * 圍繞Observable流建構，表單的輸入和值都是透過這些輸入值組成的流來提供。
@@ -47,8 +48,7 @@
 1. 一個`FormArray`下可以且只能包含`FormGroup`物件。
 2. `FormGroup`下則可以包含任意`FormArray`、`FormGroup`或是`FormControl`物件。
 
-<img src="/img/reactiveForm_structure.png">
-
+![](/images/reactiveForm_structure.png)
 > 小結
 * Reactive Form要使用時須要在`app.modules.ts`的`@NgModule`中import要使用的`ReactiveFormsModule`。
 * Template-drive Form使用時須要在`app.module.ts`匯入`FormsModule`

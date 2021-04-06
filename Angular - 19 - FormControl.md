@@ -18,7 +18,18 @@
 
 * `FormControl`可以傳入**初始值**、**想要檢核的rule**
   ```ts
-  public nameControl = new FormControl({value: '88888', disabled: true});
+  public nameControl = new FormControl({value: '88888', disabled: true}, Validators.required); 
+  // 查 API 是否可以設定初始值狀態
+  ```
+  初始值可以日是 `null`，後面檢核是傳一個檢核的 function，自訂檢核可以用陣列包起來傳入多個檢核 function。
+  ```ts
+  ngOnInit(): void {
+    this.signupForm = new FormGroup({
+      username: new FormControl(null, Validators.required),
+      email: new FormControl(null, [Validators.required, Validators.email]),
+      gender: new FormControl('female')
+    });
+  }
   ```
   其中`value`就是初始值。
   那到底還能傳什麼東西進去呢?我們來看一下`FormControl`的建構式：
@@ -28,7 +39,7 @@
   問號代表可寫可不寫，所以其實也可以不用傳參數進去。
 <br/>
 
-*可用方法：
+* 可用方法：
 1. `value`：在template使用可獲得當前值
   ```html
   <div>{{ name.value }}</div>

@@ -1,0 +1,68 @@
+# Angular - 4 - Directive、範本參考變數
+## 指令 Directive
+* 多功能的標籤或屬性
+* 使用內建或自訂 Directive，定義 html 元素、操作 DOM 物件
+* Angular 有3種 Directive：
+    1. 元件 ( Component )
+    2. 屬性行指令 ( Attribute Directive )
+    3. 結構型指令 ( Structural Directive )
+
+#### 元件 Component
+* 「元件」就是一個包含範本( template )的指令
+* 在任意元件範本中可以使用 Directive 語法載入此元件
+切換到 Angular 專案內，並在 cmd 輸入`ng g component stock/stock-item`產生元件。
+<img src="/img/ng_g_component.png">
+<br/>
+建立完成之後可以在專案的資料夾下找到剛剛新增的component，以及Angular自動幫我們一起建立的`.html`、`.ts`及`.css`檔案，至於`.spec.ts`檔案是測試用的，目前可以不用理會。
+<img src="/img/ng_new_after.png" width="300px">
+
+#### 屬性型指令 Attribute Directive
+* 用來改變元素、元件或其他指令的外觀或行為
+* 常用內建指令：
+    * `ngClass`：從 HTML 元素上新增和移除 CSS 類別
+    * `ngStyle`：改變 HTML 元素的樣式
+<br/>
+
+#### 結構型指令 Structural Directive
+* 透過新增和移除 DOM 元素改變 DOM 佈局
+* 常用內建指令：
+    * `ngIf`、`ngFor`、`ngSwitchDefult`、`ngSwitchCase` ( 前面<font color="red">要</font>加 * 星號 )
+    * `ngSwitch` ( 前面<font color="red">不要</font>加 * 星號 )
+* 一個 tag 中只能有一個型指令，不能同時存在兩個
+
+## `<ng-template>`
+* Angular 內自定義的 component，可視作一個等著被呼叫的區塊
+* 同樣可以讓被包在這個區塊內的DOM物件程式碼消失
+* 可加入**範本參考變數**：`<ng-template #自訂名稱>`
+* 通常與`ngTemplateOutlet`搭配使用
+```html
+<ng-template #data1>
+  <div>data1</div>
+  <div>ng-template與ngTemplateOutlet範例</div>
+</ng-template>
+<ng-template #data2>
+  <div>data2</div>
+  <div>ng-template與ngTemplateOutlet範例</div>
+</ng-template>
+```
+
+## ngTemplateOutlet
+* 用來放置 `<ng-template>`
+* 可以把重複的樣板抽出
+* 在同一 HTML 檔案中的任一 tag 內放置，顯示 `<ng-template>` 的內容：`<div *ngTemplateOutlet="自訂名稱">`
+```html
+<div *ngTemplateOutlet="data1"></div>
+<div>中間有一百行</div>
+<div *ngTemplateOutlet="data2"></div>
+```
+<br/>
+
+## `<ng-container>`
+* 用來放置`<ng-template>`
+* 可以把重複的樣板抽出
+* 在同一html檔案中的任一tag內放
+
+> 小結
+* 一個 HTML tag 中不可並存兩個結構型指令
+* 使用 `ngIf` 可以讓不要的程式碼直接消失在 HTML 上，而非被註解掉 ( 打開 F12 不會看到該程式碼)
+

@@ -97,6 +97,20 @@ export class CreateStockComponent implements OnInit {
 * 使用 `FormControl` 時需要在 template 加入 `[formControl]` 屬性；使用 `FormGroup` 則需要在 template 中加入 `[formContorlName]` (因為可以將多組`FormControl` 傳入 `FormGroup`，合理推斷每一個tag都需要相對應的 `[formContorlName]`)。
 <br/>
 
+## 非同步自訂檢核
+```ts
+ngOnInit(): void {
+  this.signupForm = new FormGroup({
+    userdata: new FormGroup({
+      username: new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
+      email: new FormControl(null, [Validators.required, Validators.email], this.forbiddenEmails)
+    }), // 第三個參數是非同步的檢核
+    gender: new FormControl('female'),
+    hobbies: new FormArray([])
+  });
+}
+```
+
 > #### 補充
 * [FormGroup API](https://angular.tw/api/forms/FormGroup#description)
 * [FormControlName如何對應到FormControl實體](https://medium.com/@yingpinglin/ag-how-to-know-formcontrol-503ff0798e80)

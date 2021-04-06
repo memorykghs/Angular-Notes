@@ -108,7 +108,7 @@ public stock: Stock;
 ```
 其中`createStock`方法中的`stockForm.value.stock`代表什麼呢?
 首先我們知道stockForm代表template傳進來的物件，也就是`ngForm`物件，再來把這個物件印出來看看：
-<img src="/img/ng_form_1.png">
+![](/images/ng_form_1.png)
 
 可以發現`ngForm`中有許多屬性及方法可以調用，而其中有一個`value`物件，這個物件會將template中被包在有`ngModelGroup`屬性下的所有含有`value`值屬性的tag包成一個物件。
 <img src="/img/ng_formGroup.png">
@@ -121,12 +121,12 @@ public stock: Stock;
 > 小結
 * `ngForm`下可以包`ngFormGroup`或是`ngModel`，但前提是要抓值的tag一定要綁`ngModel`。
 架構如下：
-<img src="/img/ng_form_structure.png">
+![](/images/ng_form_structure.png)
 <br/>
 
 * `stockForm.value.stock`的`stockForm`拿到的是`ngForm`物件，`ngForm`物件包含了在下面的所有含有`ngModel`物件的tag。
 * `name`屬性會對應到接收到的屬性名稱跟值。
-<img src="/img/ng_formGroup_value.png">
+![](/images/ng_formGroup_value.png)
 * 欄位之間沒有順序性
 
 ## 補充 - ngModel class

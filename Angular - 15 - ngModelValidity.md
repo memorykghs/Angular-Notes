@@ -9,6 +9,7 @@ ts檔除了接前端雙向繫結丟過來的值之外，其實沒有檢核邏輯
 
 * 前面有提到`ngModel`並用來達成**雙向繫結**，這只是其中一種用法，而他的主要是用在表單驗證功能。
 * 驗證時會使用`ngSubmit`而非原本的html submit事件。
+* 在 template 上會寫小寫 `ngModel`，在 ts 宣告變數型別時則會寫大寫 `NgModel`。
   ```html
   <form [formGroup]="stockForm" (ngSubmit)="onSubmit()">
   ```
