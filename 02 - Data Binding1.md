@@ -27,7 +27,7 @@ Angular 中會用到4種 binding 技巧：
 |--server
   |--server.component.css
   |--server.component.html
-  |--server.component.spec.ts
+  |--server.component.spec.ts ( 不會用到，後面會直接砍掉不寫 )
   |--server.component.ts
 ```
 
@@ -38,7 +38,6 @@ Angular 中會用到4種 binding 技巧：
   |--server
     |--server.component.css
     |--server.component.html // 更改
-    |--server.component.spec.ts
     |--server.component.ts // 更改
 ```
 <br/>
@@ -87,7 +86,6 @@ export class ServerComponent {
   |--server
     |--server.component.css
     |--server.component.html // 更改
-    |--server.component.spec.ts
     |--server.component.ts // 更改
 ```
 
@@ -130,7 +128,6 @@ export class ServerComponent {
   |--server
     |--server.component.css
     |--server.component.html // 更改
-    |--server.component.spec.ts
     |--server.component.ts // 更改
 ```
 
@@ -211,7 +208,6 @@ isChanged() {
   |--server
     |--server.component.css
     |--server.component.html // 更改
-    |--server.component.spec.ts
     |--server.component.ts // 更改
 ```
 
