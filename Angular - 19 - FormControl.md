@@ -23,20 +23,30 @@
   ```
   初始值可以日是 `null`，後面檢核是傳一個檢核的 function，自訂檢核可以用陣列包起來傳入多個檢核 function。
   ```ts
-  ngOnInit(): void {
-    this.signupForm = new FormGroup({
-      username: new FormControl(null, Validators.required),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      gender: new FormControl('female')
-    });
+  export class AppComponent implements OnInit{
+    genders = ['male', 'female'];
+    signupForm: FormGroup;
+
+    ngOnInit(): void {
+      this.signupForm = new FormGroup({
+        username: new FormControl(null, Validators.required),
+        email: new FormControl(null, [Validators.required, Validators.email]),
+        gender: new FormControl('female')
+      });
+    }
+
+    onSubmit() {
+      console.log(this.signupForm)
+    }
   }
   ```
-  其中`value`就是初始值。
-  那到底還能傳什麼東西進去呢?我們來看一下`FormControl`的建構式：
-  ```ts
-  constructor(formState?: any, validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
-  ```
-  問號代表可寫可不寫，所以其實也可以不用傳參數進去。
+第一個 `username` 的 FormControl 物件內有2個參數，第一個是用來設定這個欄位的**初始值**，第二個則是檢核的邏輯。跟 Template-driven Form 不一樣的是，檢核欄位為必填，只要將 `required` 檢核邏輯定義在 FromControl 物件中，就不需要在 Template 中加上 `required` 了。再來，如果想要有多組的檢核邏輯，要用 `[]` 將檢核邏輯包起來，除了 Validator 預設的一些檢核狀態，也可以自行定義。而最後一個 `gender` 因為是 radio button，不需要檢核而是預設值，就只有設定 `female` 這個值進去。
+  
+回頭看到 FormControl 物件的部分，到底可以傳什麼東西進去呢?我們來看一下 [`FormControl`](https://angular.tw/api/forms/FormControl) 的建構式：
+```ts
+constructor(formState?: any, validatorOrOpts?: ValidatorFn | ValidatorFn[] | AbstractControlOptions | null, asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[] | null);
+```
+可以看到建構式 `constructor` 中第一個是 any，代表初始值可以傳入任何型別的值。第二個參數 `validatorOrOpts?` 後面有問號，代表這個參數可寫可不寫，不需要檢核可以不傳參數進去。最後一個 `asyncValidator?` 下面會再提到，這個主要是用來設定檢核是不是要同步被觸發，`true` 的話就會等資料都回來了才進行檢核。
 <br/>
 
 * 可用方法：
