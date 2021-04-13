@@ -57,3 +57,10 @@
   1. `FormControl`
   2. `FormGroup`
   3. `FormArray`
+
+動作 | Template-driven Form | Reactive Form
+--- | --- | --- |
+建立表單模型 | 由指令建立 | 在元件類別中建立 
+資料模型 | 非結構化、可變 | 結構化、不可變
+可預測性 | 非同步 | 同步
+表單驗證 | 指令 | 函式

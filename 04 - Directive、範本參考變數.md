@@ -25,11 +25,23 @@
 結構型指令會改變 HTML 的結構，可能回新增或是刪除某些 tag。結構型的指令不能夠同時使用在一個 Element 上 ( `*ngIf`、`*ngFor` on the same Element )，而 `*` 是 Angular 替結構型 Directive 多出的語法糖，例如 `*ngIf` 實際上是 `<ng-template>` 與 `[ngIf]` 的結合。常用的內建指令有：
   * `*ngIf`、`*ngFor`、`*ngSwitchDefult`、`*ngSwitchCase`
   * `ngSwitch`
+<br/>
 
 ## `<ng-template>` 範本參考變數
-範本參考變數是 Angular 內自定義的 Component，可視作一個等著被呼叫的區塊。`#` 代表此元素的 Reference，如果在 Template 中想抓到此元素，就必須使用 `#` 來標記它，稱呼上 `#` 會稱作 Template Reference Variable。
+範本參考變數是 Angular 內自定義的 Component，可視作一個等著被呼叫的區塊。`#` 代表此元素的 Reference，如果在 Template 中想抓到此元素，就必須使用 `#` 來標記它，稱呼上 `#` 會稱作 Template Reference Variable。類似於 HTML 中 tag 的 `id` 屬性概念，一個 Template 檔案中不能出現相同的範本參考變數，編譯器會報錯。
 
-語法是 `<ng-template #自訂名稱>`，通常與`ngTemplateOutlet`搭配使用。
+較常用的方法有2種：
+* 直接在想參考到的物件上綁定範本參考變數
+  ```html
+  <input type="text" #inputValue>
+  ```
+
+* 或是宣告一個可以被參考的物件
+  ```html
+  <div #divEle="ngModel"></div>
+  ```
+
+當範本參考變數沒有賦值 ( 沒有等號 ) 時，取到的會是自己本身這個 HTML tag，若有等號才會是取到等號後面的元件屬性，例如 `ngModel`。通常與`ngTemplateOutlet`搭配使用。
 
 ```
 |--app

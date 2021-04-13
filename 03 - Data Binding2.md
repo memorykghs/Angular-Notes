@@ -69,7 +69,7 @@ TypeScript 中 `onUpdateServerName()` 方法可以印出丟進來的 event 的�
 ```
 |--app
     |--app.component.html
-    |--app.module.ts //更動
+    |--app.module.ts // 更改
     |--servers
         |--server.component.css
         |--server.component.html // 更改
