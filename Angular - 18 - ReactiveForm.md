@@ -64,3 +64,15 @@
 資料模型 | 非結構化、可變 | 結構化、不可變
 可預測性 | 非同步 | 同步
 表單驗證 | 指令 | 函式
+
+> 補充 - ngModel class
+
+響應式表單和範本驅動表單都建立在下列基礎類別之上。
+
+FormControl 實例用於追蹤單個表單控制元件的值和驗證狀態。
+
+FormGroup 用於追蹤一個表單控制元件組的值和狀態。
+
+FormArray 用於追蹤表單控制元件陣列的值和狀態。
+
+ControlValueAccessor 用於在 Angular 的 FormControl 實例和原生 DOM 元素之間建立一個橋樑。

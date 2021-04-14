@@ -1,8 +1,8 @@
-# Angular - 13 - Template-driven Form
+# Angular - 15 - Template-driven Form
 在表單處理的部分，Angular 提供了兩種不同的方法：Template-driven Form 和 Reactive Form。兩者都從 View 中捕獲使用者輸入事件、驗證使用者輸入、建立表單模型、修改資料模型，並提供追蹤這些更改的途徑。
 
 比起原生的 Form 表單，Angular 提供的 Form 多了一層封裝，按下按鈕提交表單後會有一組以 JSON 格式紀錄 input 等 tag 的值、以及檢核狀態等等的資料送到後端。因為有這層封裝，不會有預設的 Form 表單的行為 ( 按下 Form 表單中的 `<button>` 不會出現導頁或重新整理的行為 )。
-![](/images/13-1.png)
+![](/images/15-1.png)
 
 > _✭參考：見底下連結_
 
@@ -151,8 +151,6 @@ export class AppComponent {
 ```
   <br/>
 
-
-
 可以觀察看看下面範例在使用 `ngModel` 綁定上有沒有什麼差別。
 ```
 |--app
@@ -238,5 +236,5 @@ export class AppComponent {
 
 > 參考
 * ✭：參考連結
-[神的 github](https://github.com/JIA-WE-LIAN/Angular-LearningNote/blob/main/5.%20Binding.md)
+[神的 github](https://github.com/we-jia/Angular-LearningNote/blob/main/10.%20Template-Driven%20Form.md)
 * [Angular 表單簡介](https://angular.tw/guide/forms-overview)

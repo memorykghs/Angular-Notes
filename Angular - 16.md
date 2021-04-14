@@ -1,185 +1,128 @@
-# Angular - 16
-* `ngModel`本身就有一些代表狀態的class可以使用，最常用到的有三組：
+# Angular - 16 - Template-driven Form 表單狀態
+前一章在特定欄位上加上 `ngModel` 進行監控、這些 `ngModel` 會被 `ngForm` 管理，然後送出表單之後使用 `console.log()` 將 `ngForm` 物件在開發者工具中印出，裡面帶有許多資訊：
+![](/images/16-1.png)
 
-  欄位狀態          |true     |false
-  :---              |:---:       |:---: 
-  欄位是否曾經被碰過 |`ng-touched`|`ng-untouched`
-  欄位值是否有改變過 |`ng-dirty`  |`ng-pristine` 
-  是否有通過欄位驗證 |`ng-valid`  |`ng-invalid` 
-  使用時html tag上需要加上`required`：
-  ```html
-  <input type="number" required/>
-  ```
+`contorls` 屬性會返回此組中控制元件的對映表；`control` 則代表內部 FormGroup 實例。所以想要觀察 `ngForm` 內部管理的 `ngModel`，會點開 `ngForm` 的 `controls` 屬性觀察。
 
-* 可搭配**範本參考變數**使用：
-使用`ngIf`判斷抓到的範本參考變數`#stockPrice`的**物件**來做檢核。
-  ```html
-  <input type="number"
-              placeholder="Stock Price"
-              name="stockPrice"
-              required
-              #stockPrice="ngModel"
-              [ngModel]="stock.price"
-              (ngModelChange)="setStockPrice($event)">
+屬性 | 型別 | 說明
+:---: | :---: | :---
+`control` | FormGroup | 內部 FormGroup 實例 ( The internal FormGroup instance. )
+`controls` | { [key: string]: AbstractControl } | 返回此組中控制元件的對映表 ( Returns a map of the controls in this group. )
 
-  <div *ngIf="stockPrice.dirty && stockPrice.invalid">
-      <div *ngIf="stockPrice.errors.required">Stock Price is Mandatory</div>
-  </div>
-  ```
-  
-  由於在這裡定義的`#stockPrice`的值是`ngModel`，所以可以利用`ngModel`本身帶有的class做檢核。
-  上面以`ngModel.dirty`、`ngModel.invalid`，藉由`*ngIf`判斷改變的**物件**切換不同的css樣式。
-<img src="/img/ng_valid_html.png">
-<font color="FF0000">p.s. Angular - 8</font>
-<br/>
-
-
----
-
-> 補充 - ngModel class
-
-響應式表單和範本驅動表單都建立在下列基礎類別之上。
-
-FormControl 實例用於追蹤單個表單控制元件的值和驗證狀態。
-
-FormGroup 用於追蹤一個表單控制元件組的值和狀態。
-
-FormArray 用於追蹤表單控制元件陣列的值和狀態。
-
-ControlValueAccessor 用於在 Angular 的 FormControl 實例和原生 DOM 元素之間建立一個橋樑。
-
-屬性名稱          |型別                     |用途說明
-  :---           |:---:                    |:---
-  `name`         |string                   |欄位名稱
-  `value`        |any                      |欄位值 
-  `valid`        |boolean                  |有效欄位(通過欄位驗證)
-  `invalid`      |boolean                  |無效欄位(欄位驗證失敗) 
-  `errors`       |{ [ key: string ] : any }|當出現無效欄位時，會出現的錯誤狀態
-  `dirty`        |boolean                  |欄位值是否曾經更動過一次以上 
-  `pristine`     |boolean                  |欄位值是否為原始值(未曾被修改過)
-  `touched`      |boolean                  |欄位曾經經歷過focus事件
-  `untouched`    |boolean                  |欄位從未經歷過focus事件 
-  `disabled`     |boolean                  |欄位設定為disabled狀態
-  `enabled`      |boolean                  |欄位設定為enabled狀態(預設啟用)
-  `formDirective`|ngForm                   |取得目前欄位所屬的ngForm表單物件
-  `valueChanges` |EventEmitter             |可用來訂閱欄位**值變更**的事件
-  `statusChanges`|EventEmitter             |可用來訂閱欄位**狀態變更**的事件
-<br/>
-
-## ngForm
-* <font color="red">ngForm提到的順序要調整</font>
-* <font color="red">ngForm常見屬性</font>
-
-  ```html
-  <form (ngSubmit)="createStock(stockForm)" #stockForm="ngForm">
-  ```
-
-  * 使用時須要在`app.module.ts`匯入`FormsModule`
-
-  ```ts
-  import { FormsModule } from '@angular/forms'; // 改動的行數
-  ...
-  ...
-  @NgModule({
-  declarations: [
-    AppComponent,
-    StockItemComponent,
-    CreateStockComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule // 改動的行數
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+除了打開來查看監控欄位資料的屬性 `controls`，
+還有幾個狀態描述屬性，例如 `dirty`、`touched`、`valid` 等等。`ngForm` 本身就有一些代表狀態的屬性可以使用，而這些屬性是繼承自 `AbstractControlDirective` 這個類別的。
 ```
+ngForm ---繼承---> ControlContainer ---繼承---> AbstractControlDirective
+```
+最常用到的狀態有3組：
 
-有value屬性的才能用???????
-需要匯入mdoule?
+控制狀態選項 | CSS類別 | 反向CSS類別 | 欄位狀態說明
+:--- |:---: |:---: |:---
+Visted | `ng-touched` | `ng-untouched` | 欄位是否曾經被碰過
+Changed | `ng-dirty`  | `ng-pristine` | 欄位值是否有改變過
+Valid | `ng-valid` | `ng-invalid` | 是否有通過欄位驗證
 
-改動的檔案：
+`touched` 代表 Form 表單的 `ngModel` 是否已經有被觸碰過，就算不輸入值，只在 `<input>` 等欄位按下滑鼠之後移開，就視為被碰過了。`dirty` 代表 Form 表單的 `ngModel` 是否有被更改過，跟 `touched` 不一樣的是，要真正有輸入值才會變為 `dirty`；而 `valid` 則是有沒有通過驗證，只要有任何一個被 `ngForm` 管理的 `ngModel` 被觸碰、被更改、或者是驗證沒有通過，就會分別是 `true`、`true`、`false`。
 
-1. 
+用開發人員工具點開這些設定 `ngModel` 的元素，會看到這幾個 Angular 額外加上去的類別，這些類別跟 `ngForm` 上面的 `dirty`、`touched`、`valid` 是完全對應到的，只是 `ngForm` 是對應到整個表單，而用開發人員工具看到的則是單一元素。
+
+下面這個範例在點選 Username 欄位之前狀態是 `ng-pristine`、`ng-invalid`。
+![](/images/16-2.png)
+
+點選之後該欄位的狀態會被變更為 `ng-dirty`、`ng-valid`
+![](/images/16-3.png)
+
+如果是要針對必填欄位加上監控的話，只需要在元素上解上 `required` 即可。
 ```html
-<h2>Create Stock Form</h2>
-
-<div class="form-group">
-  <form (ngSubmit)="createStock(stockForm)" #stockForm="ngForm">
-    <div class="stock-name">
-      <!-- name="stockName" #stockName="ngModel" -->
-      <input type="text"
-             placeholder="Stock Name"
-             required
-             name="stockName"
-             #stockName="ngModel"
-             [(ngModel)]="stock.name">
-    </div>
-    <div *ngIf="stockName.errors && stockName.errors.required">Stock Name is Mandatory</div>
-    <div class="stock-code">
-      <input type="text"
-             placeholder="Stock Code"
-             required
-             minlength="2"
-             name="stockCode"
-             #stockCode="ngModel"
-             [(ngModel)]="stock.code">
-    </div>
-    <div *ngIf="stockCode.dirty && stockCode.invalid">
-      <div *ngIf="stockCode.errors.required">Stock Code is Mandatory</div>
-      <div *ngIf="stockCode.errors.minlength">Stock Code must be atleast of length 2</div>
-    </div>
-    <div class="stock-price">
-      <input type="number"
-             placeholder="Stock Price"
-             name="stockPrice"
-             required
-             #stockPrice="ngModel"
-             [ngModel]="stock.price"
-             (ngModelChange)="setStockPrice($event)">
-    </div>
-    <div *ngIf="stockPrice.dirty && stockPrice.invalid">
-      <div *ngIf="stockPrice.errors.required">Stock Price is Mandatory</div>
-    </div>
-    <div class="stock-exchange">
-      <div>
-        <select name="stockExchange" [(ngModel)]="stock.exchange">
-          <option *ngFor="let exchange of exchanges" [ngValue]="exchange">{{exchange}}</option>
-        </select>
-      </div>
-    </div>
-    <div class="stock-confirm">
-      <input type="checkbox"
-             name="stockConfirm"
-             required
-             [(ngModel)]="confirmed">
-      I confirm that the information provided above is accurate!
-    </div>
-    <button type="submit">Create</button>
-  </form>
-</div>
-
-<h4>Stock Name is {{stock | json}}</h4>
-<h4>Data has been confirmed: {{confirmed}}</h4>
+<input type="number" required/>
 ```
 
-<font color="red">模擬表單input值傳送(僅單一input欄位)。</font>
+## Form 表單驗證與錯誤訊息
 
-> 小結
-## 補充 - ngModel class
-屬性名稱          |型別                     |用途說明
-  :---           |:---:                    |:---
-  `value`        |any                      |群組內所有欄位值(以物件型態呈現) 
-  `valid`        |boolean                  |群組內所有欄位是否皆為有效欄位
-  `invalid`      |boolean                  |無效欄位(欄位驗證失敗) 
-  `errors`       |{ [ key: string ] : any }|當出現無效欄位時，會出現的錯誤狀態
-  `dirty`        |boolean                  |欄位值是否曾經更動過一次以上 
-  `pristine`     |boolean                  |欄位值是否為原始值(未曾被修改過)
-  `touched`      |boolean                  |欄位曾經經歷過focus事件
-  `untouched`    |boolean                  |欄位從未經歷過focus事件 
-  `disabled`     |boolean                  |欄位設定為disabled狀態
-  `enabled`      |boolean                  |欄位設定為enabled狀態(預設啟用)
-  `formDirective`|ngForm                   |取得目前欄位所屬的ngForm表單物件
-  `valueChanges` |EventEmitter             |可用來訂閱欄位**值變更**的事件
-  `statusChanges`|EventEmitter             |可用來訂閱欄位**狀態變更**的事件
+## 使用 `@ViewChild` 來監控 ngForm
+Form 表單中，除了使用範本參考變數設定 Reference 進行監控，另外一種方法是在 TypeScript 使用 `@ViewChild` 來進行。
+
+`@ViewChild` 是一個屬性裝飾器，變更檢測器會在監控的 DOM 中查詢能匹配上該選擇器的第一個元素或指令。 如果檢視的 DOM 發生了變化，出現了匹配該選擇器的新的子節點，該屬性就會被更新。
+
+```
+|--app
+    |--app.component.html // 更改
+    |--app.module.ts // 更改
+    |--servers
+    |--server
+```
+
+1. `app.component.html`
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <form (ngSubmit)="onSubmit()" #form="ngForm">
+        <div id="user-data">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text"
+                    id="username"
+                    class="form-control"
+                    name="username"
+                    ngModel
+                    required>
+          </div>
+          <button class="btn btn-default" type="button">Suggest an Username</button>
+          <div class="form-group">
+            <label for="email">Mail</label>
+            <input type="email"
+                    id="email"
+                    class="form-control"
+                    name="email"
+                    ngModel
+                    required
+                    email>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="secret">Secret Questions</label>
+          <select id="secret"
+                  class="form-control"
+                  name="secret"
+                  ngModel>
+            <option value="pet">Your first Pet?</option>
+            <option value="teacher">Your first teacher?</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+```
+
+2. `app.component.ts`
+```ts
+export class AppComponent {
+  @ViewChild('form', {static: false}) signupForm: NgForm;
+
+  suggestUserName() {
+    const suggestedName = 'Superuser';
+  }
+
+  onSubmit() {
+    console.log(this.signupForm);
+  }
+}
+```
+`@ViewChild` Directive 傳入兩個參數，第一個是指定 `selector`，也就是要觀察的元素，這邊在 `<form>` tag 上綁定模板語法，所以傳進來的是整個 Form 表單物件。`static` 則是設定要在元素變更前解析或是變更後解析，如果為 `true`，則在變更檢測執行之前解析查詢結果，如果為 `false`，則在變更檢測之後解析；預設為 `false`。
+
+這邊列出了可以當成 `selector` 被傳入的選項，詳細可以參考官方網站：
+1. 任何帶有 `@Component` 或 `@Directive` 裝飾器的類別。
+2. 字串形式的範本參考變數（比如可以使用 @ViewChild('cmp') 來查詢 `<my-component #cmp></my-component>`。
+3. 元件樹中任何當前元件的子元件所定義的提供者（ Ex： `@ViewChild(SomeService) someService: SomeService` ）
+4. TemplateRef（ 比如可以用 `@ViewChild(TemplateRef) template;` 來查詢 `<ng-template></ng-template>`）
+<br/>
+
+
+
+> 補充
+* ✭：參考連結
+[神的 github](https://github.com/we-jia/Angular-LearningNote/blob/main/10.%20Template-Driven%20Form.md)
+* https://angular.tw/api/forms/NgForm

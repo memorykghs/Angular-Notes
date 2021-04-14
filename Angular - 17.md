@@ -1,4 +1,64 @@
 # Angular - 17 -n gModelGroup
+更多可以用的驗證：https://angular.tw/api/forms/Validators
+
+---
+
+屬性名稱          |型別                     |用途說明
+  :---           |:---:                    |:---
+  `name`         |string                   |欄位名稱
+  `value`        |any                      |欄位值 
+  `valid`        |boolean                  |有效欄位(通過欄位驗證)
+  `invalid`      |boolean                  |無效欄位(欄位驗證失敗) 
+  `errors`       |{ [ key: string ] : any }|當出現無效欄位時，會出現的錯誤狀態
+  `dirty`        |boolean                  |欄位值是否曾經更動過一次以上 
+  `pristine`     |boolean                  |欄位值是否為原始值(未曾被修改過)
+  `touched`      |boolean                  |欄位曾經經歷過focus事件
+  `untouched`    |boolean                  |欄位從未經歷過focus事件 
+  `disabled`     |boolean                  |欄位設定為disabled狀態
+  `enabled`      |boolean                  |欄位設定為enabled狀態(預設啟用)
+  `formDirective`|ngForm                   |取得目前欄位所屬的ngForm表單物件
+  `valueChanges` |EventEmitter             |可用來訂閱欄位**值變更**的事件
+  `statusChanges`|EventEmitter             |可用來訂閱欄位**狀態變更**的事件
+<br/>
+
+## ngForm
+* <font color="red">ngForm提到的順序要調整</font>
+* <font color="red">ngForm常見屬性</font>
+
+```html
+<form (ngSubmit)="createStock(stockForm)" #stockForm="ngForm">
+```
+
+  * 使用時須要在`app.module.ts`匯入`FormsModule`
+
+
+有value屬性的才能用???????
+需要匯入mdoule?
+
+改動的檔案：
+
+
+<font color="red">模擬表單input值傳送(僅單一input欄位)。</font>
+
+> 小結
+## 補充 - ngModel class
+屬性名稱          |型別                     |用途說明
+  :---           |:---:                    |:---
+  `value`        |any                      |群組內所有欄位值(以物件型態呈現) 
+  `valid`        |boolean                  |群組內所有欄位是否皆為有效欄位
+  `invalid`      |boolean                  |無效欄位(欄位驗證失敗) 
+  `errors`       |{ [ key: string ] : any }|當出現無效欄位時，會出現的錯誤狀態
+  `dirty`        |boolean                  |欄位值是否曾經更動過一次以上 
+  `pristine`     |boolean                  |欄位值是否為原始值(未曾被修改過)
+  `touched`      |boolean                  |欄位曾經經歷過focus事件
+  `untouched`    |boolean                  |欄位從未經歷過focus事件 
+  `disabled`     |boolean                  |欄位設定為disabled狀態
+  `enabled`      |boolean                  |欄位設定為enabled狀態(預設啟用)
+  `formDirective`|ngForm                   |取得目前欄位所屬的ngForm表單物件
+  `valueChanges` |EventEmitter             |可用來訂閱欄位**值變更**的事件
+  `statusChanges`|EventEmitter             |可用來訂閱欄位**狀態變更**的事件
+
+
 ## ngModelGroup
 * 管理一組表單控制元件，包含所有子控制項和子群組
 * 可以取代原本寫的雙向繫結(大部分的表單驗證不需要雙項細節)，只要留有`ngModel`屬性就好，Angular會知道這個欄位要送到後端。
