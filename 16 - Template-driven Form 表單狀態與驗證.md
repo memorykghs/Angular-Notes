@@ -38,7 +38,7 @@ Valid | `ng-valid` | `ng-invalid` | 是否有通過欄位驗證
 ```
 
 ## Form 表單驗證與錯誤訊息
-除了前面提到的一些狀態，我們還可以在欄位上使用 HTML 原生的驗證功能如 `required` 跟 `email`：`<input type="email" ngModel required email>`
+除了前面提到的一些狀態，我們還可以在欄位上使用 HTML 原生的驗證功能如 `required` 跟 `email`：`<input type="email" ngModel required email>`。
 ```
 |--app
     |--app.component.html // 更改
