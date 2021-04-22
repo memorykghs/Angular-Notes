@@ -1,5 +1,18 @@
 # Angular - 27 - Observable
 ## Observable
+Observable 其實是由第三方套件實作的，也就是 Rxjs。什麼是 Observable 呢?在 Observable 的設計模式下會有兩個角色：**Observable** 及 **Observer**。Observable 可以想像成是一個資料來源 ( Data Source )，像是事件、Http Request 發送回來的資料等等。在程式碼被執行的過程當中，有一個時間軸，在這條時間軸上面可以有多個事件被 Observable 發射 ( emit )。而另外一個角色 Observer，稱為觀察者，可以當成是自己寫的業務邏輯程式碼，當資料從 Observable 被發出來，Observer 監控到就會執行我們後續的業務邏輯。
+
+在 Observable 的生命週期間，Observer 可以從 Observable 取得三種不同類型的資料：
+1. 一般的資料 ( Normal Data )
+2. 錯物資料物件 ( Errors )
+3. Observable 是否處理完成的訊息 ( Completion )
+
+我們可以針對這3種資料進行不同的處理。
+
+所以簡單來說，Observable 模式就是為了讓我們方便觀察是否已經取的想要的資料，在要到資料之後進行處理，那麼我們什麼時候會知道資料已經被丟回來了呢?比較經典的例子就是發送 Ajax 請求，為了讓程式碼同步，以前的 JavaScript 做法會是利用 callback function 或是 Promise 來達到同步的目的；在 Angular 中則是引入了觀察者模式，由 Observer 去觀察來源物件 ( Observable )。
+
+前面提到 Observable 可以當作是資料的串流或是資料來源，當有新資料時，Observable 會發送事件出去。Observer 則是要訂閱 ( subscribe ) 才能接收到 Observable 發出的事件。
+
 * 屬於 Rxjs 的物件( Angular 本身含有Rxjs的程式碼)
   * 用宣告式寫 &rArr; Functional Programming
   * 沒有副作用(例如：console.log()並非JS原生的方法)
