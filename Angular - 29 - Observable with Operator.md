@@ -6,7 +6,7 @@
 在取得回傳資料物件 ( Subscription ) 之前，我們可以透過一系列的 Operator 改變資料、甚至資料結構，達到處理資料的目的。
 
 #### map()
-迭代資料集合中的每一筆資料，並回傳新的資料集合。跟 JavaScript 陣列方法不一樣的地方是，JavaSript 的 `map()` 迭代一個陣列，並產生新的陣列回傳；而 RxJS 雖然也會產生新的物件，但型別不限於陣列。
+迭代資料集合中的每一筆資料，並回傳新的資料集合。跟 JavaScript 陣列方法不一樣的地方是，JavaSript 的 `map()` 迭代一個陣列，並產生新的陣列回傳；而 RxJS 雖然也會回傳新的 Observable，但資料型別不限於陣列。( p.s. Angular 6 之後所有的 Operator 都需要放在 `pipe()` 內 )
 ```
 |--main
   |--main.component.html
@@ -21,31 +21,15 @@ export class MainComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    const customerMainObservable = of(observer => {
-      let count = 0;
-      setInterval(() => {
-        observer.next(count);
-        if(count === 5){
-          observer.complete();
-        }
-        if(count > 3){
-          observer.error(new Error('Count is greater than 3!'))
-        }
-        count++;
-      }, 1000);
-    });
-
-    this.mainObservable = customerMainObservable.map((data: number) => 'Round ' + data).subscribe(
-      data => console.log(data),
-      error => alert(error.message),
-      () => console.log('Complete')
-    );
+     const intervalSource = interval(1000);
+     intervalSource.pipe(map(x => x + 2)).subscribe(console.log);
   }
 }
 ```
+<br/>
 
-#### filter()
-可以設定條件過濾資料，並回傳新資料集合。如果條件判斷結果回傳 `true`，則該筆資料被留下加到新集合中；若為 `false` 則跳過。
+#### mapTo()
+雖然名稱跟 `map()` 很像，但是可以把內容改成固定的值。裡面可以傳入任何型別的值，例如傳入一個 Function，則回傳的每一個值就都會是 Function。
 
 ```
 |--main
@@ -56,30 +40,36 @@ export class MainComponent implements OnInit {
 1. `main.component.ts`
 ```ts
 export class MainComponent implements OnInit {
-  mainObservable: Subscription;
 
   constructor() { }
 
   ngOnInit(): void {
-    const customerMainObservable = of((observer: any) => {
-      let count = 0;
-      setInterval(() => {
-        observer.next(count);
-        if(count === 5){
-          observer.complete();
-        }
-        if(count > 3){
-          observer.error(new Error('Count is greater than 3!'))
-        }
-        count++;
-      }, 1000);
-    });
+     const intervalSource = interval(1000);
+     intervalSource.pipe(mapTo(2)).subscribe(console.log);
+  }
+}
+```
+原本的 `interval(1000)` 會在一秒印出一個數字，數字跟著秒數成長，但使用 `mapTo()` 之後會變成固定的值。
+<br/>
 
-    this.mainObservable = customerMainObservable.filter((data: number) => {return data/3 === 0}).subscribe(
-      (data: any) => console.log(data),
-      (error: any) => alert(error.message),
-      () => console.log('Complete')
-    );
+#### filter()
+可以傳入一個 callback function 過濾資料，`filter()` 會執行 callback function 並回傳一個 boolean 值來絕地定當前的資料要不要被留下。如果條件判斷結果回傳 `true`，則該筆資料被留下加到新集合中；若為 `false` 則跳過。以下面的例子來說，結果只會印出 3, 6, 9......。
+
+```
+|--main
+  |--main.component.html
+  |--main.component.ts // 更改
+```
+
+1. `main.component.ts`
+```ts
+export class MainComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+     const intervalSource = interval(1000);
+     intervalSource.pipe(filter(x => x % 3 === 0)).subscribe(console.log);
   }
 }
 ```
@@ -95,14 +85,18 @@ export class MainComponent implements OnInit {
 
 1. `main.component.ts`
 ```ts
-// 前面省略
-this.mainObservable = customerMainObservable.filter((data: number) => {return data/3 === 0}).subscribe(
-      (data: any) => console.log(data),
-      (error: any) => alert(error.message),
-      () => console.log('Complete')
-    );
+export class MainComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+     const intervalSource = interval(1000);
+     customerMainObservable.filter(x => x % 3 === 0).map(x => x + 2).subscribe(console.log);
+  }
+}
+
 ```
-原本在使用 Operator 上需要一個一個串接，較難以看出到底使用了那些 Operator，使用 `pipe()` 則可以簡化寫法，Operator 之間以逗號 `,` 隔開。
+原本在使用 Operator 上需要一個一個串接，較難以看出到底使用了那些 Operator，使用 `pipe()` 則可以簡化寫法，Operator 之間以逗號 `,` 隔開。( p.s. Angular 6 之後所有的 Operator 都需要放在 `pipe()` 內 )
 
 ```
 |--main
@@ -112,19 +106,45 @@ this.mainObservable = customerMainObservable.filter((data: number) => {return da
 
 1. `main.component.ts`
 ```ts
-// 前面省略
-this.mainObservable = customerMainObservable.pipe(
-    filter((data: number) => {return data/3 === 0}),
-    map((data: number) => 'Round ' + data,
-    tap())
-    .subscribe(
-      (data: any) => console.log(data),
-      (error: any) => alert(error.message),
-      () => console.log('Complete')
-    );
+export class MainComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+     const intervalSource = interval(1000);
+     customerMainObservable.pipe(
+        filter(x => x % 3 === 0),
+        map(x => x + 2)
+     ).subscribe(console.log);
+  }
+}
+```
+<br/>
+
+#### take()
+原本在 Observable 的 stream 上，資料會無窮的一直發送，如果使用 `take()` 的話，就只會拿設定的那幾筆，之後會呼叫 Observable 的 `complete()` 結束 Observable。
+
+```
+|--main
+  |--main.component.html
+  |--main.component.ts // 更改
 ```
 
-<br/>
+1. `main.component.ts`
+```ts
+export class MainComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+     const intervalSource = interval(1000);
+     intervalSource.pipe(take(3)).subscribe({
+        next: console.log,
+        complete: () => console.log("Complete!")
+     });
+  }
+}
+```
 
 > 參考
 * https://www.udemy.com/course/the-complete-guide-to-angular-2/learn/lecture/14466302#notes
