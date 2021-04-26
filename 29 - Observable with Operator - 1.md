@@ -1,4 +1,4 @@
-# Angular - 29 - Observable with Operator
+# Angular - 29 - Observable with Operator - 1
 通常我們對一個物件訂閱，都是想要拿到某些特定的資料，不過這些資料都是沒有經過處理過的 ( raw data )。大部的情況下我們都需要對這些資料進行資料處理，例如在顯示員工姓名時，要同時顯示員工行編之類的。這部分可以用 Rxjs 中的 Operator 來達到目的。
 
 ## Operator
@@ -146,9 +146,99 @@ export class MainComponent implements OnInit {
 }
 ```
 
+#### first()
+跟 `take()` 的功能差不多，只是只拿第一筆。
+
+```
+|--main
+  |--main.component.html
+  |--main.component.ts // 更改
+```
+
+1. `main.component.ts`
+```ts
+export class MainComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+     const intervalSource = interval(1000);
+     intervalSource.pipe(first()).subscribe({
+        next: console.log,
+        complete: () => console.log("Complete!")
+     });
+  }
+}
+```
+<br/>
+
+#### first()
+跟 `take()` 的功能差不多，只是只拿第一筆。
+
+```
+|--main
+  |--main.component.html
+  |--main.component.ts // 更改
+```
+
+1. `main.component.ts`
+```ts
+export class MainComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+     const intervalSource = interval(1000);
+     intervalSource.pipe(first()).subscribe({
+        next: console.log,
+        complete: () => console.log("Complete!")
+     });
+  }
+}
+```
+<br/>
+
+#### takeUntil()
+可以指定當某個事件發生時，就讓 Observable 執行 `complete()`。
+
+```
+|--main
+  |--main.component.html
+  |--main.component.ts // 更改
+```
+
+1. `main.component.ts`
+```ts
+export class MainComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+    const intervalSource = interval(1000);
+    intervalSource.pipe(takeUntil(this.onClick)).subscribe({
+      next: console.log,
+      complete: () => console.log("Complete!")
+    });
+  }
+
+  onClick(){}
+}
+```
+
+## 小結
+* map
+* mapTo
+* filter
+* pipe
+* take
+* first
+* takeUntil
+
 > 參考
 * https://www.udemy.com/course/the-complete-guide-to-angular-2/learn/lecture/14466302#notes
 
 * https://ithelp.ithome.com.tw/articles/10209779
 
 * https://indepth.dev/posts/1037/reading-the-rxjs-6-sources-map-and-pipe
+
+* https://blog.jerry-hong.com/series/rxjs/thirty-days-RxJS-08/
