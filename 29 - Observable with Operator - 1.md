@@ -199,31 +199,45 @@ export class MainComponent implements OnInit {
 <br/>
 
 #### takeUntil()
-可以指定當某個事件發生時，就讓 Observable 執行 `complete()`。
+可以指定當某個事件發生時，就讓 Observable 執行 `complete()`。`tackUntil()` 可以傳入 Rxjs 監聽的事件，我們會使用 `fromEvent()` 來監聽指定的元素，`fromEvent()` 的 API 如下：
+```ts
+fromEvent<T>(target: any, eventName: string, options?: EventListenerOptions | ((...args: any[]) => T), resultSelector?: (...args: any[]) => T): Observable<T>
+```
 
+`target` 的部分要傳入 DOM 素，可以把整個 `document` 物件丟進去，或搭配 `@ViewChild` 來抓取 Template DOM 物件。
 ```
 |--main
-  |--main.component.html
+  |--main.component.html // 更改
   |--main.component.ts // 更改
 ```
 
-1. `main.component.ts`
+1. `main.component.html`
+```html
+<h5>Click button.</h5>
+<button type="button" (click)="onClick()">Click</button>
+```
+<br/>
+
+2. `main.component.ts`
 ```ts
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  onClickEvent = fromEvent(document, "click");
 
   ngOnInit(): void {
-    const intervalSource = interval(1000);
-    intervalSource.pipe(takeUntil(this.onClick)).subscribe({
-      next: console.log,
-      complete: () => console.log("Complete!")
-    });
-  }
+    console.clear();
 
-  onClick(){}
+    interval(1000)
+      .pipe(takeUntil(this.onClickEvent))
+      .subscribe(
+        data => console.log(data),
+        error => console.log("Error!"),
+        () => console.log("Complete!")
+      );
+  }
 }
 ```
+可以觀察到什麼時候按下按鈕，Observable 就會在什麼時候呼叫 `complete()` 完成狀態。
 
 ## 小結
 * map
