@@ -1,8 +1,7 @@
 # Angular - 29 - Observable with Operator - 1
 ## 續 Operator
 #### concatAll()
-有時我們的 Observable 送出的元素又是一個 observable，就像是二維陣列，陣列裡面的元素是陣列，這時我們就可以用 concatAll 把它攤平成一維陣列，大家也可以直接把 concatAll 想成把所有元素 concat 起來
-
+可以將二維以上的陣列 ( 含二維陣列 ) 攤平成一維陣列，可以想像成把陣列內的所有元素 concat 起來，不管裡面有幾層。
 ```
 |--main
   |--main.component.html
@@ -12,23 +11,39 @@
 1. `main.component.ts`
 ```ts
 export class AppComponent implements OnInit {
-  testSource1: object;
-  testSource2: object;
 
   ngOnInit(): void {
-    this.testSource1 = {
-      name: "Orola",
-      age: 29
-    };
+     let dataSource = [
+        ["cat", "dog", "bird", "turtle"],
+        ['elephant', 'hippo', 'zebra']
+     ];
 
-    this.testSource2 = {
-      name: "Tony",
-      age: 25
-    };
-
-    of(this.testSource1, this.testSource2)
+    from(dataSource)
       .pipe(concatAll())
-      .subscribe(x => console.log(x));
+      .subscribe(x);
+  }
+}
+```
+上面這個例子我們設計了一個二維陣列，當我們使用 `concatAll()` 後把結果印出來會發現他已經將陣列內的所有值拆開，並放在同一個陣列內。如果改為使用 `map()` 的話結果就會不一樣，經過 `map()` 拿到的會是裡面內層的陣列。要注意的是，`concatAll()` 會處理 source 先發出來的 Observable，必須等到這個 Observable 結束，才會再處理下一個 source 發出來的 Observable。
+```
+|--main
+  |--main.component.html
+  |--main.component.ts // 更改
+```
+
+1. `main.component.ts`
+```ts
+export class AppComponent implements OnInit {
+
+  ngOnInit(): void {
+     let dataSource = [
+        ["cat", "dog", "bird", "turtle"],
+        ['elephant', 'hippo', 'zebra']
+     ];
+
+    from(dataSource)
+       .pipe(map(x => x))
+       .subscribe(console.log);
   }
 }
 ```
