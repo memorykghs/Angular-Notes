@@ -78,6 +78,7 @@ export class AppComponent implements OnInit {
 }
 ```
 上面這個例子我們設計了一個二維陣列，當我們使用 `concatAll()` 後把結果印出來會發現他已經將陣列內的所有值拆開，並放在同一個陣列內，所以 console 印出來的結果會是一個一個的字串內容。
+<br/>
 ![](/images/30-1.png)
 
 如果改為使用 `map()` 的話結果就會不一樣，經過 `map()` 拿到的會是裡面內層的陣列。要注意的是，`concatAll()` 會處理 source 先發出來的 Observable，必須等到這個 Observable 結束，才會再處理下一個 source 發出來的 Observable。
@@ -103,6 +104,7 @@ export class AppComponent implements OnInit {
   }
 }
 ```
+
 ![](/images/30-2.png)
 
 整體來說感覺會像是這樣的結構：
@@ -174,6 +176,36 @@ export class AppComponent implements OnInit {
   }
 }
 ```
+
+---
+
+接下來的三個 Operators 則像是 AND ( && ) 邏輯，多個元素送進來，最後只會輸出一個元素，但各自行為上仍有些差異。
+
+#### combineLatest()
+```
+|--main
+  |--main.component.html
+  |--main.component.ts // 更改
+```
+
+1. `main.component.ts`
+```ts
+export class AppComponent implements OnInit {
+
+  ngOnInit(): void {
+    console.clear();
+
+    let source1 = interval(500).pipe(take(5));
+    let source2 = interval(300).pipe(
+       take(10),
+       skip(5)
+    );
+
+    combineLatest(source1, source2).subscribe(console.log);
+  }
+}
+```
+
 
 
 ## 小結
