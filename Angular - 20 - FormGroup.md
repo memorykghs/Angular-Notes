@@ -1,4 +1,119 @@
-# Angular - 20 - FormGroup
+# Angular - 20 - 自定義檢核
+## 自定義同步檢核
+除了 Validators 提供的原生的基本檢核，我們也可以在表單控制元件中加入自訂的檢核。自訂檢核說白了就是一組自帶有自己檢核邏輯的 function，這個 function 最終會被 Angular 執行。
+```
+|--app
+    |--app.component.html // 更改
+    |--app.component.ts // 更改
+    |--app.component.css
+```
+
+1. `app.component.html`
+```html
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+        <div formGroupName="userdata">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              class="form-control"
+              formControlName="username">
+            <span
+              *ngIf="signupForm.get('userdata.username').invalid && signupForm.get('userdata.username').touched"
+              class="help-block">
+              <span *ngIf="signupForm.get('userdata.username').errors['nameIsForbidden']">This name is invalid!</span><!-- 自定義檢核前端驗證 -->
+              <span *ngIf="signupForm.get('userdata.username').errors['required']">This field is required!</span>
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="email">email</label>
+            <input
+              type="text"
+              id="email"
+              class="form-control"
+              formControlName="email">
+            <span
+              *ngIf="signupForm.get('userdata.email').invalid && signupForm.get('userdata.email').touched"
+              class="help-block">Please enter a valid email!</span>
+          </div>
+        </div>
+        <div class="radio" *ngFor="let gender of genders">
+          <label>
+            <input
+              type="radio"
+              [value]="gender"
+              formControlName="gender">{{ gender }}
+          </label>
+        </div>
+        <div formArrayName="hobbies">
+          <h4>Your hobbies</h4>
+          <button type="button"
+                  class="btn btn-default"
+                  (click)="onAddHobby()">Add hobby</button>
+          <div class="form-group"
+                *ngFor="let hobbyControl of hobbies; let i = index">
+            <input type="text" class="form-control" [formControlName]="i">
+          </div>
+        </div>
+        <span *ngIf="signupForm.invalid && signupForm.touched"
+              class="help-block">Please enter a valid data!</span>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+```
+<br/>
+
+2. `app.component.ts`
+```ts
+export class AppComponent implements OnInit{
+  genders = ['male', 'female'];
+  signupForm: FormGroup;
+  forbiddenUserNames = ['Chris', 'Anna'];
+
+  ngOnInit(): void {
+    this.signupForm = new FormGroup({
+      userdata: new FormGroup({
+        username: new FormControl(null, [Validators.required, this.forbiddenNames.bind(this)]),
+        email: new FormControl(null, [Validators.required, Validators.email])
+      }),
+      gender: new FormControl('female'),
+      hobbies: new FormArray([])
+    });
+  }
+
+  get hobbies() {
+    return (this.signupForm.get('hobbies') as FormArray).controls;
+  }
+
+  onSubmit() {
+    console.log(this.signupForm)
+  }
+
+  onAddHobby() {
+    const control = new FormControl(null, Validators.required);
+    (this.signupForm.get('hobbies') as FormArray).push(control);
+  }
+
+  forbiddenNames(control: FormControl): {[s: string]: boolean} {
+    if(this.forbiddenUserNames.indexOf(control.value) !== -1){
+      return {
+        nameIsForbidden: true
+      };
+    }
+    return null;
+  }
+}
+```
+我們在 ts 檔中定義了一個新的方法，該方法會傳入一組 FormControl 物件，這個物件就是我們想要驗證的欄位的表單控制元件。
+
+在 TypeScript 中定義了一個新 method，參數上放入 FormControl 物件，代表想要進行驗證的物件，回傳則定義了一組物件，key 定義為 string、value 定義為 boolean，如果驗證失敗就回傳此物件，成功時則回傳 null ( 不是把 true 更改成 false，這個物件是驗證失敗時傳遞給外部的訊息，null 才是驗證成功， )。接著在上方的 signupForm 補上自己定義好的方法，並且使用 bind(..) 明確綁定當下的 this 為何。在 Template 中則是新增幾個 <span> 來代表驗證失敗時應該要呈現的訊息。
+
 ## FormGroup
 * 用於追蹤一個表單控制元件組的值和狀態。
 * 相較於
