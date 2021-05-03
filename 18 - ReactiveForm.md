@@ -60,6 +60,19 @@ Reactive Form 中最常見的表單控制元件有4個：
 
 接下來我們要在 TypeScripe 建立表單控制元件。要建立表單控制元件的話，需要使用 `new` 關鍵字建立 `FormGroup` 類別實體，並往裡面塞各種實作 `AbstractControl` 介面的類別 ( 包含 `FormGroup`、`FormArray` 或是 `FormControl` )，這裡使用的是一個 `FormGroup`，裡面包含3個控制元件 `FormControl`。
 
+FormGroup 可以傳入一組子控制元件，並包裝成一個物件，其建構式如下：
+```ts
+constructor(controls: { [key: string]: AbstractControl; }, validatorOrOpts?: ValidatorFn | AbstractControlOptions | ValidatorFn[], asyncValidator?: AsyncValidatorFn | AsyncValidatorFn[])
+```
+所以 FormGorup 中也可以再包一層 FormGroup，這部份下一張會提到。
+
+名稱  | 型別  | 說明
+:---  |:---  |:---
+`control`|object |可以傳入任何一種繼承`AbstractControl`實例物件，這邊傳入`FormControl`。<br/> ▶ `key`：是每個控制元件的名字，也就是在template中被包在`[FormGroup]`內的子結點的`formControlName`屬性。
+`validatorOrOpts`|ValidatorFn<br/>AbstractControlOptions<br/>ValidatorFn[ ] |一個驗證函式或其陣列，通常傳入驗證規則的function。<br/>可以不傳(預設值是 undefined)。
+<br/>
+
+再來在 TypeScript 新增 FormGroup 控制元件：
 ```ts
 export class AppComponent implements OnInit{
   genders = ['male', 'female'];

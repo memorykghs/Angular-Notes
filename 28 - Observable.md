@@ -1,8 +1,9 @@
 # Angular - 28 - Observable
-## Observable
+Observable 是 Angular 內包含的一個函式庫，在使用時必須從 Rxjs 中 import。
 ```
 import { Observable } from 'rxjs';
 ```
+下面會提到幾種 Observable 的基本概念，後面會補充幾個建立 Observable 的方式。
 
 #### Observable.create ( *deprecated* )
 可以用來建立一個 Observable 物件，使用 `next()` 方法將資料發送出去。

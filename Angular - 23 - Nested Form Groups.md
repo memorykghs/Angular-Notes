@@ -62,23 +62,7 @@
         ```
 <br/>
 
-## 表單控制元件設值
-上面用到的 `patchValue`、`setValue`、`reset` 3個方法屬於 `FormGroup` 服務的方法：
-1. `setValue(obj)`：設定此 `FormGroup` 的值。
-    * 傳入的 `obj` 必須完全與 `FromGroup` 中的物件結構相同
-    * 以控制元件名作為 key。
-<br/>
 
-2. `patchValue(obj)`：修補此 FormGroup 的值，並儘量把它們的值匹配到組中正確的控制元件上。
-    * 傳入的 `obj` 如果對應不到屬性不會出現錯誤，會自動忽略。
-<br/>
-
-3. `reset`、`reset(obj)`：重置這個 `FormGroup`，把它的各級子控制元件都標記為 `pristine` 和 `untouched`，並把它們的值都設定為 `null`。
-也就是說：
-    * 表單狀態會被重置為 `pristine`
-    * 傳入的 `obj` 如果比對不到屬性不會出現錯誤，會自動忽略
-    * 所有欄位值變成 `null`
-<br/>
 
 #### 改動的檔案：
 1. `create-stock.component.html`

@@ -288,5 +288,5 @@ export class AppComponent implements OnInit {
 
 > 參考
 * https://blog.jerry-hong.com/series/rxjs/thirty-days-RxJS-09/
-* 
+
 * https://rxjs-dev.firebaseapp.com/api
