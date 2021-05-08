@@ -1,4 +1,4 @@
-# Angular - 29 - Observable with Operator - 1
+# Angular - 31 - Observable with Operator - 1
 ## Operator (續)
 
 ```

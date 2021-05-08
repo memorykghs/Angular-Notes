@@ -18,7 +18,7 @@ var arrayMethod = source2.map(x => x);
 console.log(`arrayMethod ---> ${arrayMethod}`);
 ```
 Console 只會印出陣列的物件，Observable 則不會。
-![](/images/33-1.png)
+![](/images/32-1.png)
 
 延遲運算的優勢：
 
