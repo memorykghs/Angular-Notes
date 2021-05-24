@@ -1,4 +1,4 @@
-# Angular - 35 - Pipe
+# Angular - 23 - Pipe
 在 Angular 中，想要改變成現在畫面上的資料而不動到 ts 的原始資料時，可以在 Template 綁定 Interpolation Binding 同時透過管線操作 ( Pipe ) 來進行，像是將英文轉全部都大寫。<br/>
 ![](/images/35-1.png)
 

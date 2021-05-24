@@ -2,7 +2,22 @@
 ng 是 Angular 的縮寫，只要在專案中看到，就代表是 Angular 的指令 Angular 或功能。
 
 * `npm install -g @angular/cli` 
-安裝Angular CLI
+安裝 Angular CLI，。 
+    * `-g`：代表安裝的是全域環境 ( gloabal )
+    * `npm install -g @angular/cli@8.3.29`：另外安裝時可以指定安裝版本，在要安裝的套件後面以 `@` 後面接指定版本即可。
+<br/>
+
+* `npm uninstall -g @angular/cli`
+解除安裝。
+<br/>
+
+* `npm cache clean --force`
+清空儲存在電腦的 cach。
+<br/>
+
+* `ng --version`
+查看目前 Angular 相關套件版本。
+![](/images/ng-version.png)
 <br/>
 
 * `ng new my-app`
@@ -11,7 +26,7 @@ ng 是 Angular 的縮寫，只要在專案中看到，就代表是 Angular 的�
 <br/>
 
 * `Would you like to add Angular routing? (y/N)`：
-這是詢問是否需要自訂路由（網站 URL），這個可以之後再行增加，因此選 No 跳過就好。
+這是詢問是否需要自訂路由（網站 URL），也可以之後再行增加，選擇 `Y` 後會看到有 `app-routing.module.ts` 這個檔案。
 <br/>
 
 * `Which stylesheet format would you like to use? (Use arrow keys)`
