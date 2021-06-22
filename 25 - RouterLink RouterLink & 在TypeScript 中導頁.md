@@ -1,4 +1,4 @@
-# Angular - 25 - RouterLink
+# Angular - 25 - RouterLink & 在TypeScript 中導頁
 有時候我們會透過點選連結 ( `<a>` 標籤 ) 來切換到另一個畫面，不過 `<a>` 標籤是透過他本身的屬性 `href` 導，這種方式還是有發送請求到後端。但以 SPA 的角度來說，應該只用 JavaScript 就可以達到選染畫面的效果，所以實際上在 Angular 使用 `<a>` 標籤會透過 Angular 自己包裝過的 routerLink 功能來達到切換畫面的效果。
 
 ```
@@ -25,7 +25,7 @@
   </div>
 </div>
 ```
-由於前一章已經設定完路由的導向了，所以這裡我們只要在 `<a>` 綁定 `routerLink="/url"` 或是 `[routerLink]="['/url']"` 就可以了。使用 `routerLink="/url"` 的話就只能繫結字串，不能繫結變數；加上中括號 `[routerLink]="['/url']"` 的話就可以細節一個陣列物件。另外如果 URL 前面有家上斜線 `/` 的話，是採用絕對路徑；但沒有加斜線的話會用相對路徑，這時主控台就會報錯。
+由於前一章已經設定完路由的導向了，所以這裡我們只要在 `<a>` 綁定 `routerLink="/url"` 或是 `[routerLink]="['/url']"` 就可以了。使用 **`routerLink="/url"` ( 常量繫結 )** 的話就只能繫結字串，不能繫結變數；加上中括號 **`[routerLink]="['/url']"` ( 物件繫結 )** 的話就可以細節一個陣列物件。另外如果 URL 前面有家上斜線 `/` 的話，是採用絕對路徑；但沒有加斜線的話會用相對路徑，這時主控台就會報錯。
 
 ```
 |--servers
@@ -141,6 +141,20 @@ export class ServersComponent implements OnInit {
   }
 }
 ```
+
+## 小結
+一般透過露由導覽可以分為兩種：絕對位址導覽及相對位址導覽。
+* 絕對位址導覽
+  ```ts
+  this.router.navigateByUrl('servers/1');
+  this.router.navigate(['servers/1']);
+  ```
+
+* 相對位址導覽 ( 相對於目前路由的網址路徑 )
+  ```ts
+  this.router.navigate(['../'], { relativeTo: this.route });
+  this.router.navigate(['../1'], { relativeTo: this.route });
+  ```
 <br/>
 
 > 參考
